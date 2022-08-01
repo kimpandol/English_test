@@ -6,6 +6,7 @@ BTN_COLOR = "#F0F0F0"
 import csv
 from tkinter import *
 import random
+from english_test_func import *
 
 answer = 0
 
@@ -17,6 +18,9 @@ def next_question():
         button[i].config(bg=BTN_COLOR)
 
     multi_choice = random.sample(question,4)
+    find_current(multi_choice)                  # 맞힌 적 있는 문제 거름
+    retry_find(multi_choice)                    # 한번 더 거름
+
     answer = random.randint(0,3)
     cur_question = multi_choice[answer][0]
 
@@ -24,6 +28,7 @@ def next_question():
 
     for i in range(4):
         button[i].config(text=multi_choice[i][1])
+        print(multi_choice[i])
 
 
 #정답 체크
@@ -43,18 +48,18 @@ window = Tk()
 window.title("영퀴")
 window.config(padx=30, pady=10, bg=BGCOLOR)
 
-#question
+#question BOX
 question_label = Label(window, width=20, height=2, text="test", font=("함초롬돋움",25,"bold"), bg=BGCOLOR, fg="white")
 question_label.pack(pady=30)
 
-#multiple choice
+#multiple choice BOX
 button = []
 for i in range(4):
     btn = Button(window, text=f"{i}번", width=50, height=2, font=("함초롬돋움",15,"bold"), bg=BTN_COLOR, command=lambda idx = i:check_answer(idx))
     btn.pack()
     button.append(btn)
 
-#next btn
+#next btn BOX
 next_btn = Button(window, text="다음 문제", width=15, height=2, font=("함초롬돋움",15,"bold"), bg=CORRECT_COLOR, command=next_question)
 next_btn.pack(pady=30)
 
