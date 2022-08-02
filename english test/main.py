@@ -28,7 +28,7 @@ def next_question():
 
     for i in range(4):
         button[i].config(text=multi_choice[i][1])
-        print(multi_choice[i])
+        #print(multi_choice[i])                  # 출력 좀 볼려고 임시로 넣음
 
 
 #정답 체크
