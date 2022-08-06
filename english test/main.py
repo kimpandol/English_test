@@ -8,8 +8,13 @@ from tkinter import *
 import random
 import pandas as pd
 from english_test_func import *
+from gtts import gTTS
+import pyglet
+import os
 
 
+
+right_answer_once = 0
 
 #문제 출력
 def next_question():
@@ -20,7 +25,6 @@ def next_question():
         button[i].config(bg=BTN_COLOR)
 
     multi_choice = random.sample(question,4)
-
     find_current(multi_choice)                  # 맞힌 적 있는 문제 거름
 
     answer = random.randint(0,3)
@@ -28,26 +32,40 @@ def next_question():
 
     question_label.config(text=cur_question)
 
+    #음성 출력
+    tts = gTTS(text=cur_question)
+    tts.save('english test/sample.mp3')
+    music = pyglet.resource.media("sample.mp3")
+    music.play()
+    os.remove('english test\\sample.mp3')
+
     for i in range(4):
         button[i].config(text=multi_choice[i][1])
-        #print(multi_choice[i])                  # 출력 좀 볼려고 임시로 넣음
 
 
 #정답 체크
 def check_answer(idx):
-    print(cur_question)
+    global right_answer_once
     idx = int(idx)
+    
     if answer == idx:
         button[idx].config(bg=CORRECT_COLOR)
         window.after(1000, next_question)
 
         #정답 pandas로 읽고 맞으면 +1
-        question_pd.loc[question_pd.단어==cur_question, 'right']+=1
-        question_pd.to_csv("english test\\단어장\\voca.csv", index=False)
+        if right_answer_once == 0:
+            question_pd.loc[question_pd.단어==cur_question, '맞힌 수'] += 1
+            question_pd.to_csv("english test\\단어장\\voca.csv", index=False)
 
+        else:
+            question_pd.loc[question_pd.단어==cur_question, '틀린 수'] += 1
+            question_pd.to_csv("english test\\단어장\\voca.csv", index=False)
+
+        right_answer_once = 0
 
     else:        
         button[idx].config(bg=WRONG_COLOR)
+        right_answer_once += 1
 
 
 with open("english test\\단어장\\voca.csv", "r", encoding="UTF-8-sig") as file:
