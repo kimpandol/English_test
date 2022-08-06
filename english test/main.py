@@ -20,8 +20,8 @@ def next_question():
         button[i].config(bg=BTN_COLOR)
 
     multi_choice = random.sample(question,4)
+
     find_current(multi_choice)                  # 맞힌 적 있는 문제 거름
-    retry_find(multi_choice)                    # 한번 더 거름
 
     answer = random.randint(0,3)
     cur_question = multi_choice[answer][0]
@@ -53,7 +53,7 @@ def check_answer(idx):
 with open("english test\\단어장\\voca.csv", "r", encoding="UTF-8-sig") as file:
     question = list(csv.reader(file))    
     
-with open("english test/단어장/voca.csv", "r", encoding="UTF-8-sig") as file_pd:
+with open("english test\\단어장\\voca.csv", "r", encoding="UTF-8-sig") as file_pd:
     question_pd = pd.read_csv(file_pd)
 
 window = Tk()
@@ -74,6 +74,7 @@ for i in range(4):
 #다음 문제 버튼 출력 // 박스 그리기
 next_btn = Button(window, text="다음 문제", width=15, height=2, font=("함초롬돋움",15,"bold"), bg=CORRECT_COLOR, command=next_question)
 next_btn.pack(pady=30)
+
 
 next_question()
 
